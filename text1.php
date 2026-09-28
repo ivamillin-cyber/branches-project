@@ -36,29 +36,36 @@ var_dump(remove($textStorage, 5));
 
 
 
-function edit(int $index, string $title, string $text, array &$storage): bool
+function edit(int $index, array &$storage, string $title = '', string $text = ''): bool
 {
-    if (isset($storage[$index])) {
-        $storage[$index]['title'] = $title;
-        $storage[$index]['text'] = $text;
-        return true;
+     if (!isset($storage[$index])) {
+        return false;
     }
-    return false;
+
+    if ($title !== '') {
+        $storage[$index]['title'] = $title;
+    }
+
+    if ($text !== '') {
+        $storage[$index]['text'] = $text;
+    }
+
+    return true;
 }
 
 
-var_dump(edit(0, 'Обновлённый заголовок', 'Обновлённый текст', $textStorage));
-var_dump(edit(5, 'Заголовок', 'Текст', $textStorage));
+echo "\n Редактирование только заголовка \n";
+var_dump(edit(0, $textStorage, 'Обновлённый заголовок'));
 
+echo "\n Редактирование только текста \n";
+var_dump(edit(0, $textStorage, '', 'Обновлённый текст'));
 
-echo "\n Итоговое содержимое массива \n";
+echo "\n Редактирование обоих полей \n";
+var_dump(edit(0, $textStorage, 'Новый заголовок', 'Новый текст'));
 
-print_r($textStorage);
+echo "\n Редактирование несуществующего элемента \n";
+var_dump(edit(5, $textStorage, 'Заголовок', 'Текст'));
 
-echo "\n Редактируем несуществующий элемент \n";
-echo "Редактирование элемента с индексом 5: ";
-var_dump(edit(5, 'Заголовок', 'Текст', $textStorage));
-
-var_dump(edit(5, 'Заголовок', 'Текст', $textStorage));
+echo "\nИтоговое содержимое массива \n";
 print_r($textStorage);
 
